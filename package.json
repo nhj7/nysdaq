@@ -1,0 +1,22 @@
+{
+  "name": "nysdaq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhj7/nysdaq.git"
+  },
+  "author": "nhj12311",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhj7/nysdaq/issues"
+  },
+  "homepage": "https://github.com/nhj7/nysdaq#readme",
+  "dependencies": {
+    "iconv-lite": "^0.6.2"
+  }
+}
