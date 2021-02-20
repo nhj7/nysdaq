@@ -20,7 +20,7 @@ const getItemValue = (node, childIdx) => {
   const url = 'http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13';
   
   console.log(`start url download ${url}` );
-  const destFile = `kr_stock_list.xls`;
+  const destFile = `./asset/data/kr_stock_list.xls`;
   await util.urlDownload(url,destFile);
   
   console.log(`end url download` );
@@ -66,7 +66,7 @@ const getItemValue = (node, childIdx) => {
   
   console.log("batchResult : ",batchResult);
 
-  
+
 
   await db.pool.end();
   
