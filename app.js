@@ -87,7 +87,7 @@ const main = async () => {
         reply.type('text/html;charset=utf-8').code(200)
         return diffListHtml;
     })
-    fastify.listen(7000, (err, address) => {
+    fastify.listen(7000, "0.0.0.0" ,(err, address) => {
         if (err) throw err
         fastify.log.info(`server listening on ${address}`)
     })
