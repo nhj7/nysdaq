@@ -27,6 +27,8 @@ async function test(){
 (async () =>{
     row = await test();
     console.log(row);
+
+    pool.end();
 })();
  
 module.exports = {
