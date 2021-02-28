@@ -3,10 +3,10 @@ require('dotenv').config();
 
 // 설정된 환경으로 config 적용.
 const pool = db.createPool({
-    host: process.env.DB_HOST
-    , port:process.env.DB_PORT
-    , user: process.env.DB_ID
-    , password: process.env.DB_PASSWORD
+    host: process.env.DB_HOST || 'localhost'
+    , port:process.env.DB_PORT || 3306
+    , user: process.env.DB_ID || 'nysdaq'
+    , password: process.env.DB_PASSWORD || 'nysdaq'
     , database: "nysdaq"
     , connectionLimit: 5
 });

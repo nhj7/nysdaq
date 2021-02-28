@@ -20,13 +20,20 @@
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.5",
     "dotenv": "^8.2.0",
+    "fastify": "^3.12.0",
     "iconv-lite": "^0.6.2",
     "jsdom": "^16.4.0",
     "krx-stock-api": "^1.0.0",
     "mariadb": "^2.5.2",
+    "pino": "^6.11.1",
+    "pino-debug": "^2.0.0",
+    "pino-pretty": "^4.5.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.1.5",
+    "vscode": "^1.1.37",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
   }
 }

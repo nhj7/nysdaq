@@ -1,20 +1,18 @@
 const db = require('./module/db.js');
 const util = require('./module/util.js');
+const log = require('./module/log.js');
 
 const main = async () => {
-    console.log("main start");
-
+    log.info("main start");
     try {
-        
-    
-
     const stockList = await db.pool.query(" select * from TB_STOCK_M ");
 
-    console.log(stockList);
+    log.info(stockList);
     for(let i = 0; i < stockList.length;i++){
         let mergeResult;
+        let arrParam;
         try {
-            console.log(stockList[i].STOCK_NO, stockList[i].STOCK_NM, stockList[i].STOCK_CD);
+            log.info(stockList[i].STOCK_NO, stockList[i].STOCK_NM, stockList[i].STOCK_CD);
 
             const res = await util.getUrlData(`https://m.stock.naver.com/api/item/getPriceDayList.nhn?code=${stockList[i].STOCK_CD}&pageSize=40&page=1`);
 
@@ -28,10 +26,10 @@ const main = async () => {
             STOCK_CD = ?, STOCK_NM = ?, END_PRICE = ? , START_PRICE = ? , CHANGE_PRICE = ?
             , CHANGE_RATIO = ?, HIGH_PRICE = ?, LOW_PRICE =?, DAY_VOLUME = ?, DAY_AMOUNT =? `
             
-            const arrParam = [];
+            arrParam = [];
             for(let li = 0; li < list.length;li++){
                 const item = list[li];
-                console.log(
+                log.info(
                     /*
                     item.dt         // 일자
                     , item.ncv      // 종가
@@ -47,8 +45,8 @@ const main = async () => {
                 );
                 
                 arrParam.push(
-                    [item.dt, stockList[i].STOCK_NO, stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr, item.hv, item.lv, item.aq, item.aq
-                    , stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr, item.hv, item.lv, item.aq, item.aq // update
+                    [item.dt, stockList[i].STOCK_NO, stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq
+                    , stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq // update
                     ]
                 )
                 
@@ -56,17 +54,18 @@ const main = async () => {
             mergeResult = await db.pool.batch(mergeSql,arrParam );
         } catch (error) {
             mergeResult = error;
+            log.error(error, arrParam);
         }finally{
-            console.log(stockList[i].STOCK_NM, stockList[i].STOCK_CD ,mergeResult);
+            log.info(stockList[i].STOCK_NM, stockList[i].STOCK_CD ,mergeResult);
         }
         //debugger;
         await util.sleep(200);
     }
 
     } catch (error) {
-        console.log("main error", error);     
+        log.info("main error", error);     
     } finally {
-        console.log("main end");
+        log.info("main end");
         db.pool.end();
     }
 };
