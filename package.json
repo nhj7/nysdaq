@@ -27,6 +27,7 @@
     "mariadb": "^2.5.2",
     "pino": "^6.11.1",
     "pino-debug": "^2.0.0",
+    "pino-multi-stream": "^5.2.0",
     "pino-pretty": "^4.5.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",

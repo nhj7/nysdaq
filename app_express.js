@@ -2,30 +2,30 @@
 const diff_sql =
     `
 select 
-	STOCK_CD 
-	, STOCK_NM 
-	, ROUND( (recent_price / avg_price - 1) * 100, 2) as DIFF_RATE
-	, max_dt_seq
-	, floor(avg_price) as avg_price
-	, recent_price
+STOCK_CD 
+, STOCK_NM 
+, ROUND( (recent_price / avg_price - 1) * 100, 2) as DIFF_RATE
+, max_dt_seq
+, floor(avg_price) as avg_price
+, recent_price
 from (
-	select
-		tsdh .STOCK_CD
-		, max(tsdh .STOCK_NM ) as stock_nm
-		, sum(tsdh.END_PRICE ) / count(*) as avg_price
-		, max( dt_seq ) as max_dt_seq
-		, SUBSTRING_INDEX(GROUP_CONCAT(tsdh.END_PRICE ORDER BY dt_seq asc), ',', 1) recent_price 
-	from (
-		select
-			(select count(*) + 1 from TB_STOCK_DAILY_H where STOCK_CD = tmp.STOCK_CD and HIST_DT > tmp.HIST_DT ) as dt_seq
-			, tmp.*  
-		from TB_STOCK_DAILY_H tmp
-		where (select count(*) + 1 from TB_STOCK_DAILY_H where STOCK_CD = tmp.STOCK_CD and HIST_DT > tmp.HIST_DT ) <= 25
-	) tsdh 
-	where 1=1
-	-- and tsdh.STOCK_CD in ( '005930'  , '035420' , '033540')
-	group by tsdh.stock_cd
-	order by tsdh.stock_cd
+select
+    tsdh .STOCK_CD
+    , max(tsdh .STOCK_NM ) as stock_nm
+    , sum(tsdh.END_PRICE ) / count(*) as avg_price
+    , max( dt_seq ) as max_dt_seq
+    , SUBSTRING_INDEX(GROUP_CONCAT(tsdh.END_PRICE ORDER BY dt_seq asc), ',', 1) recent_price 
+from (
+    select
+        (select count(*) + 1 from TB_STOCK_DAILY_H where STOCK_CD = tmp.STOCK_CD and HIST_DT > tmp.HIST_DT ) as dt_seq
+        , tmp.*  
+    from TB_STOCK_DAILY_H tmp
+    where (select count(*) + 1 from TB_STOCK_DAILY_H where STOCK_CD = tmp.STOCK_CD and HIST_DT > tmp.HIST_DT ) <= 25
+) tsdh 
+where 1=1
+-- and tsdh.STOCK_CD in ( '005930'  , '035420' , '033540')
+group by tsdh.stock_cd
+order by tsdh.stock_cd
 ) diff_t
 order by ROUND( (recent_price / avg_price - 1) * 100, 2) asc 
 `
@@ -33,7 +33,7 @@ order by ROUND( (recent_price / avg_price - 1) * 100, 2) asc
 console.log(diff_sql);
 
 const db = require("./module/db.js");
-const log = require("./module/log.js");
+const log = require("./module/log_winston.js");
 
 let diffList = [];
 let diffListHtml = '';
@@ -72,22 +72,17 @@ const main = async () => {
     log.info("start app.js");
     await selectDiffList();
     log.info("select selectDiffList end");
-    const logger1 = log.logger;
-    logger1.stream = {
-        write: function (message) {
-            logger1.info(message);
-        }
-    }
-    const fastify = require('fastify')({ 
+    
+    const fastify = require('fastify')({
         //logger 
-        logger : true
+        logger: true
     })
 
     fastify.get('/', async (request, reply) => {
         reply.type('text/html;charset=utf-8').code(200)
         return diffListHtml;
     })
-    fastify.listen(7000, "0.0.0.0" ,(err, address) => {
+    fastify.listen(7000, "0.0.0.0", (err, address) => {
         if (err) throw err
         fastify.log.info(`server listening on ${address}`)
     })

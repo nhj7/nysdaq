@@ -4,6 +4,7 @@ const iconv = require('iconv-lite');
 const cheerio = require('cheerio');
 const db = require('./module/db.js');
 const util = require('./module/util.js');
+const log = require('./module/log_pino.js');
 
 const getItemValue = (node, childIdx) => {
   const rtnVal = node 
@@ -19,13 +20,13 @@ const getItemValue = (node, childIdx) => {
 
   const url = 'http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13';
   
-  console.log(`start url download ${url}` );
+  log.info(`start url download ${url}` );
   const destFile = `./asset/data/kr_stock_list.xls`;
   await util.urlDownload(url,destFile);
   
-  console.log(`end url download` );
+  log.info(`end url download` );
 
-  console.log("async start");
+  log.info("async start");
   const data = await fs.readFile(destFile, "latin1");
   var utfData = iconv.decode(data, "EUC-KR")
   const $ = cheerio.load(utfData);
@@ -40,7 +41,7 @@ const getItemValue = (node, childIdx) => {
       if(stockCd=="종목코드"){
         continue;
       }
-      console.log(
+      log.info(
         idx
         , stockNm
         , stockCd
@@ -54,17 +55,17 @@ const getItemValue = (node, childIdx) => {
       );
       batchParam.push([stockCd, stockNm, stockNm]);
       // insertSql = `insert into TB_STOCK_M(STOCK_CD, STOCK_NM) VALUES('${stockCd}', '${stockNm}' ) ON DUPLICATE KEY UPDATE STOCK_NM = '${stockNm}'  `
-      // console.log( insertSql );
+      // log.info( insertSql );
       // const result = await db.query(insertSql);
-      // console.log("result : ",result)
+      // log.info("result : ",result)
     } catch (error) {
       console.error(idx, error);
     }
   } // end for
-  console.log("batchQuery Start ");
+  log.info("batchQuery Start ");
   const batchResult = await db.pool.batch(`insert into TB_STOCK_M(STOCK_CD, STOCK_NM) VALUES(?, ? ) ON DUPLICATE KEY UPDATE STOCK_NM = ?`, batchParam);
   
-  console.log("batchResult : ",batchResult);
+  log.info("batchResult : ",batchResult);
 
 
 
