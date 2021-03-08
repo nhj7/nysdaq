@@ -15,8 +15,14 @@ const getItemValue = (node, childIdx) => {
 }
 
 (async () =>{
+  try {
+    
+  log.debug("1");  
+  console.log("12");
   const dirList = await fs.readdir('./', 'utf8');
   console.table((dirList));
+  
+  log.debug("2");
 
   const url = 'http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13';
   
@@ -71,5 +77,7 @@ const getItemValue = (node, childIdx) => {
 
   await db.pool.end();
   
-  
+  } catch (error) {
+    log.error("error : ",error);
+  }
 })();

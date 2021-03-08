@@ -1,5 +1,17 @@
 const pino = require('pino')
 
+
+const logPath1 = `/log/`;
+const logPath2 = `/log/nysdaq`;
+
+const logPath = `${logPath2}`;
+
+const fs = require("fs");
+!fs.existsSync(logPath1) && fs.mkdirSync(logPath1);
+!fs.existsSync(logPath2) && fs.mkdirSync(logPath2);
+
+
+
 const consoleLogger = pino(
   {
     level: 'debug'
@@ -43,7 +55,7 @@ const fileDebugLogger = pino(
     //, prettifier : require('pino-pretty')
     , sync: false
   }
-  , pino.destination({ dest: '/log/nysdaq/log_nysdaq.log', sync: false })
+  , pino.destination({ dest: `${logPath}/log_nysdaq.log`, sync: false })
 )
 
 const fileErrorLogger = pino(
@@ -57,7 +69,7 @@ const fileErrorLogger = pino(
       //, prettifier : require('pino-pretty')
       , sync: false
     }
-    , pino.destination({ dest: '/log/nysdaq/error_nysdaq.log', sync: false })
+    , pino.destination({ dest:  `${logPath}/error_nysdaq.log`, sync: false })
   )
 
 // info, error, debug, fatal, warn, trace, ch
