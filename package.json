@@ -25,6 +25,8 @@
     "jsdom": "^16.4.0",
     "krx-stock-api": "^1.0.0",
     "mariadb": "^2.5.2",
+    "node-cron": "^2.0.3",
+    "node-schedule": "^2.0.0",
     "pino": "^6.11.1",
     "pino-debug": "^2.0.0",
     "pino-multi-stream": "^5.2.0",
