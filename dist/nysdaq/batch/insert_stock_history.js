@@ -44,7 +44,7 @@ const main = async () =>{
       const el = arrItem[idx];
       const stockNm = getItemValue(el, 1);
       const stockCd = getItemValue(el, 3);
-      if(stockCd=="ì¢…ëª©ì½”ë“œ"){
+      if(stockCd=="종목코드"){
         continue;
       }
       // log.info(
