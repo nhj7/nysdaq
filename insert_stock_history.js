@@ -14,7 +14,7 @@ const getItemValue = (node, childIdx) => {
   return rtnVal ? rtnVal : "";
 }
 
-(async () =>{
+const main = async () =>{
   try {
     
   log.debug("1");  
@@ -47,18 +47,18 @@ const getItemValue = (node, childIdx) => {
       if(stockCd=="종목코드"){
         continue;
       }
-      log.info(
-        idx
-        , stockNm
-        , stockCd
-        , getItemValue(el, 5)
-        , getItemValue(el, 7)
-        , getItemValue(el, 9)
-        , getItemValue(el, 11)
-        , getItemValue(el, 13)
-        , getItemValue(el, 15)
-        , getItemValue(el, 17)
-      );
+      // log.info(
+      //   idx
+      //   , stockNm
+      //   , stockCd
+      //   , getItemValue(el, 5)
+      //   , getItemValue(el, 7)
+      //   , getItemValue(el, 9)
+      //   , getItemValue(el, 11)
+      //   , getItemValue(el, 13)
+      //   , getItemValue(el, 15)
+      //   , getItemValue(el, 17)
+      // );
       batchParam.push([stockCd, stockNm, stockNm]);
       // insertSql = `insert into TB_STOCK_M(STOCK_CD, STOCK_NM) VALUES('${stockCd}', '${stockNm}' ) ON DUPLICATE KEY UPDATE STOCK_NM = '${stockNm}'  `
       // log.info( insertSql );
@@ -80,4 +80,8 @@ const getItemValue = (node, childIdx) => {
   } catch (error) {
     log.error("error : ",error);
   }
-})();
+};
+
+main();
+
+module.exports = main;

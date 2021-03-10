@@ -29,20 +29,20 @@ const main = async () => {
             arrParam = [];
             for(let li = 0; li < list.length;li++){
                 const item = list[li];
-                log.info(
-                    /*
-                    item.dt         // 일자
-                    , item.ncv      // 종가
-                    , item.cv       // 전일대비
-                    , item.cr       // 등락율
-                    , item.aq       // 거래량(?)
-                    , item.hv       // 일 고가
-                    , item.lv       // 일 저가
-                    , item.ov       // 일 시초가
-                    , item.rf       // 변경 코드. 
+                // log.info(
+                //     /*
+                //     item.dt         // 일자
+                //     , item.ncv      // 종가
+                //     , item.cv       // 전일대비
+                //     , item.cr       // 등락율
+                //     , item.aq       // 거래량(?)
+                //     , item.hv       // 일 고가
+                //     , item.lv       // 일 저가
+                //     , item.ov       // 일 시초가
+                //     , item.rf       // 변경 코드. 
                     
-                    , */ item
-                );
+                //     , */ item
+                // );
                 
                 arrParam.push(
                     [item.dt, stockList[i].STOCK_NO, stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq
@@ -56,7 +56,7 @@ const main = async () => {
             mergeResult = error;
             log.error(error, arrParam);
         }finally{
-            log.info(stockList[i].STOCK_NM, stockList[i].STOCK_CD ,mergeResult);
+            log.info(i, stockList[i].STOCK_NM, stockList[i].STOCK_CD ,mergeResult);
         }
         //debugger;
         await util.sleep(200);
