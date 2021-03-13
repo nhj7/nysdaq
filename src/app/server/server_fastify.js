@@ -92,7 +92,7 @@ const main = async () => {
 
     const fastify = require('fastify')({
         logger: log
-        //, 'disableRequestLogging': true        
+        , 'disableRequestLogging': true        
     })
 
     fastify.get('/', async (request, reply) => {
