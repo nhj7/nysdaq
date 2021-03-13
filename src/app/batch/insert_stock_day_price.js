@@ -1,6 +1,6 @@
-const db = require('../../module/db.js');
-const util = require('../../module/util.js');
-const log = require('../../module/log_pino.js');
+const db = require('../../libs/db.js');
+const util = require('../../libs/util.js');
+const log = require('../../libs/log_pino.js');
 
 const main = async () => {
     log.info("main start");

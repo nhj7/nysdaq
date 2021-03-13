@@ -32,8 +32,8 @@ order by ROUND( (recent_price / avg_price - 1) * 100, 2) asc
 
 console.log(diff_sql);
 
-const db = require("./module/db.js");
-const log = require("./module/log_winston.js");
+const db = require("../../libs/db");
+const log = require("../../libs/log_winston.js");
 
 let diffList = [];
 let diffListHtml = '';

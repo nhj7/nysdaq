@@ -10,7 +10,7 @@ const fs = require("fs");
 !fs.existsSync(logPath1) && fs.mkdirSync(logPath1);
 !fs.existsSync(logPath2) && fs.mkdirSync(logPath2);
 
-const translateTime = 'SYS:yyyy-mm-dd hh:MM:ss'
+const translateTime = 'SYS:yyyy-mm-dd HH:MM:ss'
 
 const consoleLogger = pino(
   {
@@ -213,9 +213,14 @@ try {
 } catch (e) {
   console.error(e);
 }
+try {
+  logger.debug(`pino debug 1`)
+  logger.debug(`pino debug 2`)
+  logger.info('pino info')
+  logger.error(`pino error`)
+} catch (error) {
+  console.error("error.", error);
+}
 
-logger.debug(`pino debug`)
-logger.info('pino info')
-logger.error(`pino error`)
 
 module.exports = logger;

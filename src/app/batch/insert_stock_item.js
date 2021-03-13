@@ -2,9 +2,9 @@
 const fs = require('fs').promises;
 const iconv = require('iconv-lite');
 const cheerio = require('cheerio');
-const db = require('../../module/db.js');
-const util = require('../../module/util.js');
-const log = require('../../module/log_pino.js');
+const db = require('../../libs/db.js');
+const util = require('../../libs/util.js');
+const log = require('../../libs/log_pino.js');
 
 const getItemValue = (node, childIdx) => {
   const rtnVal = node 
@@ -17,12 +17,9 @@ const getItemValue = (node, childIdx) => {
 const main = async () =>{
   try {
     
-  log.debug("1");  
-  console.log("12");
   const dirList = await fs.readdir('./', 'utf8');
   console.table((dirList));
-  
-  log.debug("2");
+
 
   const url = 'http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13';
   

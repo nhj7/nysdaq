@@ -32,14 +32,15 @@ from (
 order by ROUND( (recent_price / avg_price - 1) * 100, 2) asc 
 `
 
-console.log(diff_sql);
 
-const db = require("./module/db.js");
-const log = require("./module/log_pino.js");
+
+const db = require('../../libs/db');
+const log = require("../../libs/log_pino");
 
 let diffList = [];
 let diffListHtml = '';
 const selectDiffList = async () => {
+    console.log(diff_sql);
     diffList = await db.pool.query(diff_sql);
     diffListHtml = tableGenerator(diffList);
 }
@@ -73,11 +74,22 @@ function tableGenerator(data) { // data is an array
 const main = async () => {
     log.info("start app.js");
     await selectDiffList();
+
+    const cron = require('node-cron');
+
+    cron.schedule('0 40 */1 * * *', async () => {
+        console.log('running a task every hour ');
+        await selectDiffList();
+        console.log('end.');
+    }
+        , { timezone: "Asia/Seoul" }
+    );
+
     log.info("select selectDiffList end");
-    
-    const fastify = require('fastify')({ 
-        logger : log
-        , 'disableRequestLogging' :true
+
+    const fastify = require('fastify')({
+        logger: log
+        , 'disableRequestLogging': true
         /*
         logger : {
             level : 'debug'
@@ -96,10 +108,10 @@ const main = async () => {
         reply.type('text/html;charset=utf-8').code(200)
         return diffListHtml;
     })
-    fastify.listen(7000, "0.0.0.0" ,(err, address) => {
+    fastify.listen(7000, "0.0.0.0", (err, address) => {
         if (err) throw err
         fastify.log.info(`server listening on ${address}`)
     })
 }
 
-main();
+module.exports = main;
