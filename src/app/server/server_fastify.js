@@ -97,6 +97,9 @@ const main = async () => {
 
     fastify.get('/', async (request, reply) => {
         reply.type('text/html;charset=utf-8').code(200)
+
+        log.info(`server accept ${request.ip}`)
+
         return diffListHtml;
     })
     fastify.listen(7000, "0.0.0.0", (err, address) => {
