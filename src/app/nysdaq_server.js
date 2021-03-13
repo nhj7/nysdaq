@@ -6,7 +6,7 @@ const main = async () => {
         await server.startServerFastify();    
     } catch (error) {
         console.error("server error", error);
-    }
+    } 
     
 }
 main();

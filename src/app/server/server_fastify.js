@@ -76,7 +76,7 @@ const main = async () => {
     log.info("start app.js");
     await selectDiffList();
 
-    log.info("html", diffListHtml);
+    //log.info("html", diffListHtml);
 
     const cron = require('node-cron');
 
