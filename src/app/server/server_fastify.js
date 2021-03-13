@@ -100,7 +100,10 @@ const main = async () => {
         return diffListHtml;
     })
     fastify.listen(7000, "0.0.0.0", (err, address) => {
-        if (err) throw err
+        if (err) {
+            console.error("server listen error", erorr);
+            throw err
+        }
         fastify.log.info(`server listening on ${address}`)
     })
 }
