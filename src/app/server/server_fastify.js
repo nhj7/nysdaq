@@ -101,7 +101,7 @@ const main = async () => {
     })
     fastify.listen(7000, "0.0.0.0", (err, address) => {
         if (err) {
-            console.error("server listen error", erorr);
+            console.error("server listen error", err);
             throw err
         }
         log.info(`server listening on ${address}`)
