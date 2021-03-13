@@ -36,6 +36,7 @@ order by ROUND( (recent_price / avg_price - 1) * 100, 2) asc
 
 const db = require('../../libs/db');
 const log = require("../../libs/log_pino");
+const log_winston = require('../../libs/log_winston');
 
 let diffList = [];
 let diffListHtml = '';
@@ -75,6 +76,8 @@ const main = async () => {
     log.info("start app.js");
     await selectDiffList();
 
+    log.info("html", diffListHtml);
+
     const cron = require('node-cron');
 
     cron.schedule('0 40 */1 * * *', async () => {
@@ -89,19 +92,7 @@ const main = async () => {
 
     const fastify = require('fastify')({
         logger: log
-        , 'disableRequestLogging': true
-        /*
-        logger : {
-            level : 'debug'
-            , prettyPrint: {
-                translateTime: 'yyyy-mm-dd HH:MM:ss'
-                , ignore: 'pid,hostname'
-              }
-              , prettifier: require('pino-pretty')
-              , sync: false
-              , file : '/log/nysdaq/pino_debug.log'
-        }
-        */
+        , 'disableRequestLogging': true        
     })
 
     fastify.get('/', async (request, reply) => {
