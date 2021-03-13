@@ -10,7 +10,7 @@ const fs = require("fs");
 !fs.existsSync(logPath1) && fs.mkdirSync(logPath1);
 !fs.existsSync(logPath2) && fs.mkdirSync(logPath2);
 
-
+const translateTime = 'SYS:yyyy-mm-dd hh:MM:ss'
 
 const consoleLogger = pino(
   {
@@ -18,7 +18,7 @@ const consoleLogger = pino(
     , disableRequestLogging : false
     , prettyPrint: {
       colorize: true
-      , translateTime: 'yyyy-mm-dd HH:MM:ss'
+      , translateTime: translateTime
       , ignore: 'pid,hostname'
     }
     , prettifier: require('pino-pretty')
@@ -49,7 +49,7 @@ const fileDebugLogger = pino(
     level: 'debug'
     , disableRequestLogging : true
     , prettyPrint: {
-      translateTime: 'yyyy-mm-dd HH:MM:ss'
+      translateTime: translateTime
       , ignore: 'pid,hostname'
     }
     //, prettifier : require('pino-pretty')
@@ -63,7 +63,7 @@ const fileErrorLogger = pino(
       level: 'error'
       , disableRequestLogging : true
       , prettyPrint: {
-        translateTime: 'yyyy-mm-dd HH:MM:ss'
+        translateTime: translateTime
         , ignore: 'pid,hostname'
       }
       //, prettifier : require('pino-pretty')

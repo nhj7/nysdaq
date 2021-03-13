@@ -2,9 +2,9 @@
 const fs = require('fs').promises;
 const iconv = require('iconv-lite');
 const cheerio = require('cheerio');
-const db = require('../module/db.js');
-const util = require('../module/util.js');
-const log = require('../module/log_pino.js');
+const db = require('../../module/db.js');
+const util = require('../../module/util.js');
+const log = require('../../module/log_pino.js');
 
 const getItemValue = (node, childIdx) => {
   const rtnVal = node 
@@ -75,13 +75,15 @@ const main = async () =>{
 
 
 
-  await db.pool.end();
+  
   
   } catch (error) {
     log.error("error : ",error);
+  } finally {
+    //await db.pool.end();
   }
 };
 
-main();
+//main();
 
 module.exports = main;
