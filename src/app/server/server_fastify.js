@@ -92,7 +92,7 @@ const main = async () => {
 
     const fastify = require('fastify')({
         logger: log
-        , 'disableRequestLogging': true        
+        //, 'disableRequestLogging': true        
     })
 
     fastify.get('/', async (request, reply) => {
@@ -104,7 +104,7 @@ const main = async () => {
             console.error("server listen error", erorr);
             throw err
         }
-        fastify.log.info(`server listening on ${address}`)
+        log.info(`server listening on ${address}`)
     })
 }
 
