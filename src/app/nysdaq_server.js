@@ -2,7 +2,12 @@
 const server = require("./server")
 
 const main = async () => {
-    await server.startServerFastify();
+    try {
+        await server.startServerFastify();    
+    } catch (error) {
+        console.error("server error", error);
+    }
+    
 }
 main();
 
