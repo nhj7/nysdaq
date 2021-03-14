@@ -12,7 +12,7 @@ const main = async () => {
         let mergeResult;
         let arrParam;
         try {
-            log.info(stockList[i].STOCK_NO, stockList[i].STOCK_NM, stockList[i].STOCK_CD);
+            //log.info(stockList[i].STOCK_NO, stockList[i].STOCK_NM, stockList[i].STOCK_CD);
 
             const res = await util.getUrlData(`https://m.stock.naver.com/api/item/getPriceDayList.nhn?code=${stockList[i].STOCK_CD}&pageSize=40&page=1`);
 
