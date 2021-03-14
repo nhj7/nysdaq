@@ -41,7 +41,7 @@ const log_winston = require('../../libs/log_winston');
 let diffList = [];
 let diffListHtml = '';
 const selectDiffList = async () => {
-    console.log(diff_sql);
+    log.debug(diff_sql);
     diffList = await db.pool.query(diff_sql);
     diffListHtml = tableGenerator(diffList);
 }
@@ -81,9 +81,9 @@ const main = async () => {
     const cron = require('node-cron');
 
     cron.schedule('0 40 */1 * * *', async () => {
-        console.log('running a task every hour ');
+        log.debug('running a task every hour ');
         await selectDiffList();
-        console.log('end.');
+        log.debug('end.');
     }
         , { timezone: "Asia/Seoul" }
     );
@@ -104,7 +104,7 @@ const main = async () => {
     })
     fastify.listen(7000, "0.0.0.0", (err, address) => {
         if (err) {
-            console.error("server listen error", err);
+            log.error("server listen error", err);
             throw err
         }
         log.info(`server listening on ${address}`)

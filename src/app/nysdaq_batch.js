@@ -1,8 +1,7 @@
-console.log("batch start");
-
 const batch = require("./batch")
+const log = require("../libs/log_pino")
 
-console.log("batch start 22");
+log.debug("batch start");
 
 const main = async () => {
     await batch.insertStockItem();
@@ -10,12 +9,10 @@ const main = async () => {
 }
 
 const cron = require('node-cron');
-
-cron.schedule('0 31 15 * * *', async () => {
+cron.schedule('0 */3 20 * * *', async () => {
 //cron.schedule('0 */1 * * * *', async () => {    
-    console.log('running a task every day 1 16 hour ');
+    log.debug('running a task every day 1 16 hour ');
     await main();
-    console.log('end.');
-}
+    log.debug('end.');}
     , { timezone: "Asia/Seoul" }
 );

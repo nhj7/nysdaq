@@ -135,7 +135,7 @@ const getPinoLogger = ( arrLogs) => {
                   }
                 }
               }
-              initiator = ' [' + initiator + ']'
+              initiator = ' \n \t\t\t\t → [' + initiator + ']'
               if (args.length == 1 && typeof args[0] == 'string') {
                 args[0] = args[0] + ' ' + initiator;
                 originalMethod.apply(logger, [...args]);
@@ -207,20 +207,18 @@ try {
           }
         }
       }
-      originalMethod.apply(console, [...args, `  at ${initiator}`]);
+      originalMethod.apply(console, [...args, ` \n \t\t\t\t → at ${initiator}`]);
     };
   });
 } catch (e) {
   console.error(e);
 }
 try {
-  logger.debug(`pino debug 1`)
-  logger.debug(`pino debug 2`)
-  logger.info('pino info')
-  logger.error(`pino error`)
+  logger.debug(`pino start debug test`)  
+  logger.info('pino start info test')
+  logger.error(`pino start error test`)
 } catch (error) {
   console.error("error.", error);
 }
-
 
 module.exports = logger;
