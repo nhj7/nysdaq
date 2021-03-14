@@ -9,7 +9,7 @@ const main = async () => {
 }
 
 const cron = require('node-cron');
-cron.schedule('0 */3 20 * * *', async () => {
+cron.schedule('0 31 */1 * * *', async () => {
 //cron.schedule('0 */1 * * * *', async () => {    
     log.debug('running a task every day 1 16 hour ');
     await main();
