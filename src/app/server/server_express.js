@@ -33,7 +33,7 @@ order by ROUND( (recent_price / avg_price - 1) * 100, 2) asc
 console.log(diff_sql);
 
 const db = require("../../libs/db");
-const log = require("../../libs/log_winston.js");
+const log = require("../../libs/log_pino");
 
 let diffList = [];
 let diffListHtml = '';
@@ -88,4 +88,4 @@ const main = async () => {
     })
 }
 
-main();
+//main();

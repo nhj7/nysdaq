@@ -68,7 +68,7 @@ const log = (logPath) => {
           ]
        });
 
-    logger.info("START WINSTON LOG");
+    //logger.info("START WINSTON LOG");
     return {
         info : (...args) =>{
             logger.info(args);
