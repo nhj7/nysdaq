@@ -1,9 +1,13 @@
 const batch = require("./batch")
 const log = require("../libs/log_pino")
+const db = require("../libs/db")
 
 log.debug("batch start");
 
 const main = async () => {
+    const workHistQry = `INSERT INTO nysdaq.TB_WORK_H ( WORK_TITLE, WORK_STATUS, WORK_CONTENT )
+    VALUES ( 'DAILY_BATCH', '0', '')`
+    await db.pool.query(workHistQry);
     await batch.insertStockItem();
     await batch.insertStockDayPrice();
 }
