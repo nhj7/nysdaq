@@ -6,7 +6,7 @@ const main = async () => {
     log.info("main start");
     try {
     const stockList = await db.pool.query(" select * from TB_STOCK_M ");
-
+ㅕ
     log.info(stockList);
     for(let i = 0; i < stockList.length;i++){
         let mergeResult;

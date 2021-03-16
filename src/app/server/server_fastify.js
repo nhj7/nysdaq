@@ -8,7 +8,8 @@ select
 	, max_dt_seq
 	, floor(avg_price) as avg_price
     , recent_price
-    , recent_dt
+    /*, recent_dt */
+    , recent_dttm
 from (
 	select
 		tsdh .STOCK_CD
@@ -17,6 +18,7 @@ from (
 		, max( dt_seq ) as max_dt_seq
         , SUBSTRING_INDEX(GROUP_CONCAT(tsdh.END_PRICE ORDER BY dt_seq asc), ',', 1) recent_price 
         , SUBSTRING_INDEX(GROUP_CONCAT(tsdh.HIST_DT ORDER BY dt_seq asc), ',', 1) recent_dt 
+        , DATE_FORMAT(max(tsdh.MOD_DTTM), '%Y-%m-%d %H:%m:%s') as recent_dttm
 	from (
 		select
 			(select count(*) + 1 from TB_STOCK_DAILY_H where STOCK_CD = tmp.STOCK_CD and HIST_DT > tmp.HIST_DT ) as dt_seq
