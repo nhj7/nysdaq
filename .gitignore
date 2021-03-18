@@ -103,4 +103,4 @@ typings/
 # TernJS port file
 .tern-port
 
-./asset/data/kr_stock_list.xls
+/asset/data/kr_stock_list.xls
