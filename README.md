@@ -58,7 +58,7 @@ https://m.stock.naver.com/api/item/getPriceDayList.nhn?code=005930&pageSize=20&p
 https://finance.naver.com/item/sise_day.nhn?code=066570&page=1
 
 >모바일버전 응답이 훨씬 경량화 되어있어 **모바일 버전을 사용할 것.** 더군다나 pageSize까지 옵션으로 제공하고 있어서 오히려 좋아.
-비공식 api에 대한 웹 스크래핑 시 ddos, 웹방화벽 정책을 회피하기 위해 요청 마다 간격을 두는 것이 좋음.
+비공식 api에 대한 웹 스크래핑 시 ddos, 웹방화벽 정책을 회피하기 위해 요청 마다 간격을 두는 것이 좋음. 0.2 sec 정도로 스크래핑 돌리고 있음. 
 
 ```java
 // code template
