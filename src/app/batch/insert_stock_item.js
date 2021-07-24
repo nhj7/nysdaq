@@ -66,7 +66,7 @@ const main = async () =>{
     }
   } // end for
   log.info("batchQuery Start ");
-  const batchResult = await db.pool.batch(`insert into TB_STOCK_M(STOCK_CD, STOCK_NM) VALUES(?, ? ) ON DUPLICATE KEY UPDATE STOCK_NM = ?`, batchParam);
+  const batchResult = await db.pool.batch(`insert into TB_STOCK_M(STOCK_CD, STOCK_NM, reg_dttm, mod_dttm ) VALUES(?, ? , sysdate(), sysdate() ) ON DUPLICATE KEY UPDATE STOCK_NM = ?, mod_dttm = sysdate() `, batchParam);
   
   log.info("batchResult : ",batchResult);
 

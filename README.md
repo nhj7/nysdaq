@@ -1,7 +1,30 @@
 # nysdaq
 
-## 
+## mardiadb or myssql install.
 
+```
+- apt-get update
+- apt-get install mariadb-server
+- sudo mysql_secure_installation
+- sudo mysql -u root -p
+- UPDATE user SET plugin='mysql_native_password' WHERE User='root';
+
+INSERT INTO mysql.user (host,user,password,authentication_string, ssl_cipher, x509_issuer, x509_subject) VALUES ('%','nysdaq',password('nysdaq'), password('nysdaq'),'','','');
+GRANT ALL PRIVILEGES ON *.* TO 'nysdaq'@'%';
+FLUSH PRIVILEGES;
+
+- FLUSH PRIVILEGES;
+```
+
+```
+cd /etc/mysql/mariadb.conf.d
+sudo vi 50-server.cnf 
+service mysql restart
+
+#bind-address            = 127.0.0.1
+[mysqld]
+bind-address            = 0.0.0.0
+```
 
 ## 1. 한국거래소 종목 리스트 다운로드 
 

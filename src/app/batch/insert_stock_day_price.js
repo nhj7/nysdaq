@@ -19,12 +19,12 @@ const main = async () => {
             const list = res.data.result.list;
 
             const mergeSql = `INSERT INTO nysdaq.TB_STOCK_DAILY_H
-            (HIST_DT, STOCK_NO, STOCK_CD, STOCK_NM, END_PRICE, START_PRICE, CHANGE_PRICE, CHANGE_RATIO, HIGH_PRICE, LOW_PRICE, DAY_VOLUME, DAY_AMOUNT, REG_DTTM, MOD_DTTM)
-            VALUES( ? , ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                , current_timestamp(), current_timestamp())        
+            (HIST_DT, STOCK_CD, STOCK_NM, END_PRICE, START_PRICE, CHANGE_PRICE, CHANGE_RATIO, HIGH_PRICE, LOW_PRICE, DAY_VOLUME, DAY_AMOUNT, REG_DTTM, MOD_DTTM)
+            VALUES( ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                , sysdate(), current_timestamp())        
             ON DUPLICATE KEY UPDATE 
             STOCK_CD = ?, STOCK_NM = ?, END_PRICE = ? , START_PRICE = ? , CHANGE_PRICE = ?
-            , CHANGE_RATIO = ?, HIGH_PRICE = ?, LOW_PRICE =?, DAY_VOLUME = ?, DAY_AMOUNT =? `
+            , CHANGE_RATIO = ?, HIGH_PRICE = ?, LOW_PRICE =?, DAY_VOLUME = ?, DAY_AMOUNT =?, MOD_DTTM = sysdate()  `
             
             arrParam = [];
             for(let li = 0; li < list.length;li++){
@@ -45,7 +45,7 @@ const main = async () => {
                 // );
                 
                 arrParam.push(
-                    [item.dt, stockList[i].STOCK_NO, stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq
+                    [item.dt, stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq
                     , stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq // update
                     ]
                 )
@@ -70,6 +70,6 @@ const main = async () => {
     }
 };
 
-// main();
+main();
 
 module.exports = main;
