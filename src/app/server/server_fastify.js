@@ -1,21 +1,21 @@
 
 const diff_sql =
     `
-    select 
-	STOCK_CD 
+select 
+	STOCK_CD
 	, STOCK_NM 
 	, ROUND( (recent_price / avg_price - 1) * 100, 2) as DIFF_RATE
-	, max_dt_seq
-	, floor(avg_price) as avg_price
-    , recent_price
+	, HIST_CNT
+	, floor(avg_price) as AVG_PRICE
+    , RECENT_PRICE
     /*, recent_dt */
-    , recent_dttm
+    , RECENT_DTTM
 from (
 	select
 		tsdh .STOCK_CD
 		, max(tsdh.STOCK_NM ) as stock_nm
 		, sum(tsdh.END_PRICE ) / count(*) as avg_price
-		, max( dt_seq ) as max_dt_seq
+		, max( dt_seq ) as hist_cnt
         , SUBSTRING_INDEX(GROUP_CONCAT(tsdh.END_PRICE ORDER BY dt_seq asc), ',', 1) recent_price 
         , SUBSTRING_INDEX(GROUP_CONCAT(tsdh.HIST_DT ORDER BY dt_seq asc), ',', 1) recent_dt 
         , DATE_FORMAT(max(tsdh.MOD_DTTM), '%Y-%m-%d %H:%m:%s') as recent_dttm
