@@ -1,6 +1,6 @@
 # nysdaq
 
-## mardiadb or myssql install.
+## mariadb,mysql install.
 
 ```
 - apt-get update
