@@ -2,29 +2,32 @@
 const diff_sql =
     `
 select 
-	STOCK_CD 
+	STOCK_CD
 	, STOCK_NM 
 	, ROUND( (recent_price / avg_price - 1) * 100, 2) as DIFF_RATE
-	, max_dt_seq
-	, floor(avg_price) as avg_price
-    , recent_price
+	, HIST_CNT
+	, floor(avg_price) as AVG_PRICE
+    , RECENT_PRICE
     /*, recent_dt */
-    , recent_dttm
+    , RECENT_DTTM
 from (
 	select
 		tsdh .STOCK_CD
-		, max(tsdh .STOCK_NM ) as stock_nm
+		, max(tsdh.STOCK_NM ) as stock_nm
 		, sum(tsdh.END_PRICE ) / count(*) as avg_price
-		, max( dt_seq ) as max_dt_seq
+		, max( dt_seq ) as hist_cnt
         , SUBSTRING_INDEX(GROUP_CONCAT(tsdh.END_PRICE ORDER BY dt_seq asc), ',', 1) recent_price 
         , SUBSTRING_INDEX(GROUP_CONCAT(tsdh.HIST_DT ORDER BY dt_seq asc), ',', 1) recent_dt 
         , DATE_FORMAT(max(tsdh.MOD_DTTM), '%Y-%m-%d %H:%m:%s') as recent_dttm
 	from (
-		select
-			(select count(*) + 1 from TB_STOCK_DAILY_H where STOCK_CD = tmp.STOCK_CD and HIST_DT > tmp.HIST_DT ) as dt_seq
-			, tmp.*  
-		from TB_STOCK_DAILY_H tmp
-		where (select count(*) + 1 from TB_STOCK_DAILY_H where STOCK_CD = tmp.STOCK_CD and HIST_DT > tmp.HIST_DT ) <= 25
+		SELECT 
+            *
+        FROM (	
+        SELECT 
+            RANK() OVER( PARTITION BY STOCK_CD ORDER BY HIST_DT DESC)  AS dt_seq
+            , TSDH.*
+        FROM TB_STOCK_DAILY_H TSDH
+        ) TSDH WHERE dt_seq <= 25
 	) tsdh 
 	where 1=1
 	-- and tsdh.STOCK_CD in ( '005930'  , '035420' , '033540')
