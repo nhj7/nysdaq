@@ -51,7 +51,9 @@ const main = async () => {
                 )
                 
             }
-            mergeResult = await db.pool.batch(mergeSql,arrParam );
+            if(arrParam.length>0){
+                mergeResult = await db.pool.batch(mergeSql,arrParam );
+            }
         } catch (error) {
             mergeResult = error;
             log.error(error, arrParam);
