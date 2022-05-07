@@ -2,14 +2,21 @@ const db = require('mariadb');
 require('dotenv').config();
 
 // 설정된 환경으로 config 적용.
-const pool = db.createPool({
+
+const db_cfg = 
+{
     host: process.env.DB_HOST || 'localhost'
     , port:process.env.DB_PORT || 3306
     , user: process.env.DB_ID || 'nysdaq'
     , password: process.env.DB_PASSWORD || 'nysdaq'
     , database: "nysdaq"
     , connectionLimit: 5
-});
+}
+
+const pool = db.createPool(db_cfg);
+
+console.log(process.env, db_cfg);
+
 
 async function query(sql){
     let conn, rows;

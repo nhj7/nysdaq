@@ -52,18 +52,34 @@ const selectDiffList = async () => {
 }
 
 function tableGenerator(data) { // data is an array
-    let html = `<meta name="viewport" content="width=device-width, initial-scale=1"><table border='1'>`;
+    let html = 
+`
+<!doctype html>
+<html lang='ko'>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<style>
+table td{
+    border : solid 1px;
+}
+</style>
+</head>
+<body style='padding:3em;'>
+`;
     var keys = Object.keys(Object.assign({}, ...data));// Get the keys to make the header
     // Add header
-    var head = '<thead><tr>';
+    let table = `<table border='1' ><thead><tr>`;
     keys.forEach(function (key) {
-        head += '<th>' + key + '</th>';
+        table += '<th scope="col">' + key + '</th>';
     });
-    html = html.concat(head + '</tr></thead>');
+    table = table + '</tr></thead>';
     // Add body
     var body = '<tbody>';
     data.forEach(function (obj) { // For each row
-        var row = '<tr>';
+        var row = '<tr scope="row">';
         keys.forEach(function (key) { // For each column
             row += '<td>';
             if (obj.hasOwnProperty(key)) { // If the obj doesnt has a certain key, add a blank space.
@@ -73,7 +89,12 @@ function tableGenerator(data) { // data is an array
         });
         body += row + '</tr>';
     })
-    html = html.concat(body + '</tbody></table>');
+    html = html.concat( table + body + 
+        `</tbody></table>
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>        
+        </body></html>`
+        );
     return html;
 }
 
