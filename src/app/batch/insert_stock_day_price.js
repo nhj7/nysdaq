@@ -81,10 +81,10 @@ const main = async () => {
         log.info("main error", error);     
     } finally {
         log.info("main end");
-        db.pool.end();
+        //db.pool.end();
     }
 };
 
-main();
+//main();
 
 module.exports = main;
