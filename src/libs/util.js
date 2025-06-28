@@ -29,6 +29,10 @@ const getUrlData = async (url) => {
     return res;
 }
 
+const commaToNumber = (str) => {
+    return str.replace(/,/g, '');
+}
+
 
 (async () =>{
     urlDownload('http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13', "kr_stock_list.xls" );
@@ -38,5 +42,6 @@ module.exports = {
     urlDownload : urlDownload
     , sleep : sleep
     , getUrlData : getUrlData
+    , commaToNumber : commaToNumber
 }
 

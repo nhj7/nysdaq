@@ -5,19 +5,21 @@ const log = require('../../libs/log_pino.js');
 const main = async () => {
     log.info("main start");
     try {
-    const stockList = await db.pool.query(" select * from TB_STOCK_M ");
+    const stockList = await db.pool.query(" select * from TB_STOCK_M");
 
     log.info(stockList);
     for(let i = 0; i < stockList.length;i++){
-        let mergeResult;
+        let mergeResult = null;
         let arrParam;
         try {
             //log.info(stockList[i].STOCK_NO, stockList[i].STOCK_NM, stockList[i].STOCK_CD);
 
-            const res = await util.getUrlData(`https://m.stock.naver.com/api/item/getPriceDayList.nhn?code=${stockList[i].STOCK_CD}&pageSize=40&page=1`);
+            //const res = await util.getUrlData(`https://m.stock.naver.com/api/item/getPriceDayList.nhn?code=${stockList[i].STOCK_CD}&pageSize=40&page=1`);
 
-            const list = res.data.result.list;
-
+            const res = await util.getUrlData(`https://m.stock.naver.com/api/stock/${stockList[i].STOCK_CD}/price?pageSize=10&page=1`);
+            //log.info('res', res);
+            const list = res.data;
+            
             const mergeSql = `INSERT INTO nysdaq.TB_STOCK_DAILY_H
             (HIST_DT, STOCK_CD, STOCK_NM, END_PRICE, START_PRICE, CHANGE_PRICE, CHANGE_RATIO, HIGH_PRICE, LOW_PRICE, DAY_VOLUME, DAY_AMOUNT, REG_DTTM, MOD_DTTM)
             VALUES( ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
@@ -29,49 +31,60 @@ const main = async () => {
             arrParam = [];
             for(let li = 0; li < list.length;li++){
                 const item = list[li];
-                // log.info(
-                //     /*
-                //     item.dt         // 일자
-                //     , item.ncv      // 종가
-                //     , item.cv       // 전일대비
-                //     , item.cr       // 등락율
-                //     , item.aq       // 거래량(?)
-                //     , item.hv       // 일 고가
-                //     , item.lv       // 일 저가
-                //     , item.ov       // 일 시초가
-                //     , item.rf       // 변경 코드. 
-                    
-                //     , */ item
-                // );
+                /*
+                    {
+                            "localTradedAt": "2025-06-27",
+                            "closePrice": "60,800",
+                            "compareToPreviousClosePrice": "600",
+                            "compareToPreviousPrice": {
+                                "code": "2",
+                                "text": "상승",
+                                "name": "RISING"
+                            },
+                            "fluctuationsRatio": "1.00",
+                            "openPrice": "60,100",
+                            "highPrice": "61,600",
+                            "lowPrice": "60,000",
+                            "accumulatedTradingVolume": 17235470
+                        },
+                */
                 
+                /*
                 arrParam.push(
                     [item.dt, stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq
                     , stockList[i].STOCK_CD, stockList[i].STOCK_NM, item.ncv, item.ov, item.cv, item.cr || 0, item.hv, item.lv, item.aq, item.aq // update
                     ]
                 )
-                
-            }
+
+                */
+                arrParam.push(
+                    [item.localTradedAt.replace(/-/g, ''), stockList[i].STOCK_CD, stockList[i].STOCK_NM, util.commaToNumber(item.closePrice), util.commaToNumber(item.openPrice), util.commaToNumber(item.compareToPreviousClosePrice), item.fluctuationsRatio, util.commaToNumber(item.highPrice), util.commaToNumber(item.lowPrice), item.accumulatedTradingVolume, item.accumulatedTradingVolume
+                    , stockList[i].STOCK_CD, stockList[i].STOCK_NM, util.commaToNumber(item.closePrice), util.commaToNumber(item.openPrice), util.commaToNumber(item.compareToPreviousClosePrice), item.fluctuationsRatio, util.commaToNumber(item.highPrice), util.commaToNumber(item.lowPrice), item.accumulatedTradingVolume, item.accumulatedTradingVolume // update
+                    ]
+                );
+            }   // end for
+            log.info(arrParam);
             if(arrParam.length>0){
                 mergeResult = await db.pool.batch(mergeSql,arrParam );
-            }
+            }            
         } catch (error) {
             mergeResult = error;
             log.error(error, arrParam);
         }finally{
-            log.info(i, stockList[i].STOCK_NM, stockList[i].STOCK_CD ,mergeResult);
+            log.info(i, stockList[i].STOCK_NM, stockList[i].STOCK_CD);
         }
         //debugger;
-        await util.sleep(200);
+        await util.sleep(500);
     }
 
     } catch (error) {
         log.info("main error", error);     
     } finally {
         log.info("main end");
-        //db.pool.end();
+        db.pool.end();
     }
 };
 
-//main();
+main();
 
 module.exports = main;
