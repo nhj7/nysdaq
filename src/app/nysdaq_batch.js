@@ -41,7 +41,7 @@ if (process.argv[2] != "run") {
         , { timezone: "Asia/Seoul" }
     );
 
-    cron.schedule('0 31 */1 * * *', async () => {
+    cron.schedule('0 0 17 * * *', async () => {
         //cron.schedule('0 */1 * * * *', async () => {
         const workHistQry = `INSERT INTO nysdaq.TB_WORK_H ( WORK_TITLE, WORK_STATUS, WORK_CONTENT )
             VALUES ( 'BATCH', '0', 'insertStockDayPrice')`
