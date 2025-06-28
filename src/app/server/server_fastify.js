@@ -2,14 +2,13 @@
 const diff_sql =
     `
 select 
-	STOCK_CD
-	, STOCK_NM 
-	, ROUND( (recent_price / avg_price - 1) * 100, 2) as DIFF_RATE
-	, HIST_CNT
-	, floor(avg_price) as AVG_PRICE
-    , RECENT_PRICE
-    /*, recent_dt */
-    , RECENT_DTTM
+	STOCK_CD as 종목코드
+	, STOCK_NM as 종목명
+	, ROUND( (recent_price / avg_price - 1) * 100, 2) as 괴리율
+	, HIST_CNT as 최근일수
+	, floor(avg_price) as 평균가
+    , RECENT_PRICE as 최근가격
+    , RECENT_DTTM as 최근일시
 from (
 	select
 		tsdh .STOCK_CD
