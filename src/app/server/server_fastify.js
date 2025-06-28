@@ -35,7 +35,7 @@ from (
 	order by tsdh.stock_cd
 ) diff_t
 where RECENT_DTTM > DATE_ADD(CURRENT_TIMESTAMP(), INTERVAL -14 DAY )
-and ROUND( (recent_price / avg_price - 1) * 100, 2) < 0
+and ROUND( (recent_price / avg_price - 1) * 100, 2) <= -10
 order by ROUND( (recent_price / avg_price - 1) * 100, 2) asc 
 `
 
